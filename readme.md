@@ -143,7 +143,17 @@ If you wish to use role restrictions on your views, this is what you do:
 
 - Now you can use `@role('admin')` && `@endrole` without defining on middleware (for security purposes, still define your middleware)
 
-- This is replacement for `@if(auth()->user()->hasRole('admin'))` component. You can still use `@if` template
+- This is replacement for `@if(auth()->user()->hasRole('admin'))` component. You can still use `@if` template.
+
+###### Registration, Login and ResetPassword
+
+- Remember to Add `attach()` on Auth Controller so that every user starts with the lowest tier Role: `'user'`.
+
+- Add `Role::where('name', 'user')->first()` to these controllers to first search for Role 'user'.
+
+- Attach this role to registered, logged in or reset password user so that they may not bypass the Role based system. 
+
+- Recommended to use `syncWithoutDetaching()`, this restricts multiple attaching the role, and also it won't break if user is assigned `'admin'` Role by attaching `'user'` Role again.
 
 And you're done.
 
